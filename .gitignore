@@ -1,0 +1,16 @@
+*.egg-info
+*.pyc
+*.pyo
+*.sqlite
+*.sqlite3
+*.~*
+.coverage
+.idea
+.tox
+atlassian-ide-plugin.xml
+coverage.xml
+dist
+pytest.xml
+~*
+.cache
+build

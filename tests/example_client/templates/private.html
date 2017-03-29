@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% load socialaccount %}
+{% block content %}
+{% if user.is_authenticated %}
+    <a href="/accounts/logout/">logout</a>
+{% else %}
+    <a href="/accounts/login/">login</a>
+{% endif %}
+
+PRIVATE PAGE
+{% endblock content %}
