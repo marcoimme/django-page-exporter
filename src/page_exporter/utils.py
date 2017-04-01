@@ -5,11 +5,6 @@ import subprocess
 from tempfile import NamedTemporaryFile
 import json
 from mimetypes import guess_type, guess_all_extensions
-try:
-    from urllib.parse import urljoin
-except ImportError:
-    # Python 2
-    from urlparse import urljoin
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.validators import URLValidator
@@ -257,13 +252,3 @@ def image_postprocess(imagefile, output, size, crop, render):
         raise UnsupportedImageFormat
     except IOError as e:
         raise CaptureError(e)
-
-
-# def build_absolute_uri(request, url):
-#     """
-#     Allow to override printing url, not necessarily on the same
-#     server instance.
-#     """
-#     if conf.CAPTURE_ROOT_URL:
-#         return urljoin(conf.CAPTURE_ROOT_URL, url)
-#     return request.build_absolute_uri(url)

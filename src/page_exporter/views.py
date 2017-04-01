@@ -1,4 +1,3 @@
-import base64
 import logging
 from io import BytesIO
 
@@ -65,14 +64,7 @@ def capture(request):
         error_msg = _('Unsupported image format: %s' % render)
         return HttpResponseBadRequest(error_msg)
 
-    if render == "html":
-        response = HttpResponse(content_type='text/html')
-        body = """<html><body onload="window.print();">
-                <img src="data:image/png;base64,%s"/></body></html>
-                """ % base64.encodestring(stream.getvalue())
-        response.write(body)
-    else:
-        response = HttpResponse(content_type=image_mimetype(render))
-        response.write(stream.getvalue())
+    response = HttpResponse(content_type=image_mimetype(render))
+    response.write(stream.getvalue())
 
     return response
