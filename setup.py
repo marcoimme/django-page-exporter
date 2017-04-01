@@ -2,12 +2,12 @@
 import os
 import sys
 import codecs
-from distutils.config import PyPIRCCommand
 from setuptools import setup, find_packages
 
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__), 'src'))
 sys.path.append(ROOT)
 from page_exporter import NAME, get_version
+reqs = 'install.py%d.pip' % sys.version_info[0]
 
 def read(*files):
     content = ''
@@ -16,6 +16,7 @@ def read(*files):
     return content
 
 
+install_requires = read('install.any.pip', reqs),
 dev_require = read('develop.pip')
 tests_require = read('testing.pip')
 
@@ -33,7 +34,11 @@ setup(
     packages=find_packages(where=ROOT),
 
     include_package_data=True,
-    install_requires=read('install.pip'),
+    install_requires=install_requires,
+    extras_require={
+        'test': tests_require,
+        'dev': dev_require + tests_require,
+    },
     platforms=['linux'],
     classifiers=[
         'Environment :: Web Environment',

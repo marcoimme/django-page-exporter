@@ -1,10 +1,28 @@
-{% extends "base.html" %}{% load socialaccount %}
-{% block content %}
-{% if user.is_authenticated %}
-    <a href="/accounts/logout/">logout</a>
-{% else %}
-    <a href="/accounts/login/">login</a>
-{% endif %}
+{% extends "base.html" %}
 
-PRIVATE PAGE
+{% block form %}
+    <form action="{% url 'capture' %}" method="post">
+    {% csrf_token %}
+        <input type="text" name="render" value="png"> Render<br/>
+        <input type="text" name="url" value="http://localhost:8000/private/"> URL<br/>
+        <input type="text" name="width" value="1024"> Width<br/>
+        <input type="text" name="height" value="768"> Height<br/>
+        <input type="text" name="cookie_name" value="{{ cookie_name }}"> Cookie Name<br/>
+        <input type="text" name="cookie_value" value="{{ cookie_value }}"> Cookie Value<br/>
+        <input type="text" name="cookie_domain" value="{{ cookie_domain }}"> Cookie Domain<br/>
+        <input type="submit" value="Capture!">
+    </form>
+{% endblock form %}
+
+{% block content %}
+
+
+    <h1>Private Page</h1>
+    <h3>Capture an authenticated page passing session cookie to phantomsj</h3>
+    {% if user.is_authenticated %}
+        <a href="/accounts/logout/">logout</a>
+    {% else %}
+        <a href="/accounts/login/">login</a>
+    {% endif %}
+    {{ block.super }}
 {% endblock content %}

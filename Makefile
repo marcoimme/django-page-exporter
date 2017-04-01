@@ -8,6 +8,8 @@ DBENGINE?=postgres
 DJANGO_17?='django>=1.7,<1.8'
 DJANGO_18?='django>=1.8,<1.9'
 DJANGO_DEV=git+https://github.com/django/django.git
+PHANTOMJS_FILENAME=phantomjs-2.1.1-linux-x86_64
+PHANTOMJS_DOWNLOAD_URL=https://bitbucket.org/ariya/phantomjs/downloads/${PHANTOMJS_FILENAME}.tar.bz2
 
 
 mkbuilddir:
@@ -62,10 +64,10 @@ clean:
 
 build: locale
 
-qa: coverage pep8 lint clonedigger
+qa: coverage pep8 lint
 
 coverage: mkbuilddir
-	py.test --cov-report=xml --junitxml=pytest.xml --cov-config=tests/.coveragerc --cov page_exporter
+	py.test --cov-report=xml --junitxml=pytest.xml --cov-report=html --cov-config=tests/.coveragerc --cov page_exporter
 
 intersphinx:
 	@sphinx-build -b html docs/ ${BUILDDIR}/docs/
@@ -88,32 +90,33 @@ install-django:
 	@echo "# installed  Django=="`django-admin.py --version`
 
 
-init-db:
-	# initializing '${DBENGINE}' database '${DBNAME}'
-
-	@sh -c "if [ '${DBENGINE}' = 'postgres' ]; then psql -c 'DROP DATABASE IF EXISTS ${DBNAME};' -U postgres; fi"
-	@sh -c "if [ '${DBENGINE}' = 'postgres' ]; then psql -c 'CREATE DATABASE ${DBNAME};' -U postgres; fi"
-	@sh -c "if [ '${DBENGINE}' = 'postgres' ]; then pip install -q psycopg2; fi"
-
-
 pep8: mkbuilddir
-	pep8 page_exporter | tee ${BUILDDIR}/pep8.out
-
-
-clonedigger: mkbuilddir
-	clonedigger page_exporter -l python -o ${BUILDDIR}/clonedigger.html --ignore-dir=migrations,tests --fast
+	pep8 src/page_exporter | tee ${BUILDDIR}/pep8.out
 
 
 flake8: mkbuilddir
-	flake8 --format pylint page_exporter | tee ${BUILDDIR}/flake.out
+	flake8 --format pylint src/page_exporter | tee ${BUILDDIR}/flake.out
 
+
+init:
+	cd tests/example_client; rm -rf phantomjs
+	mkdir -p tests/example_client/phantomjs
+	wget ${PHANTOMJS_DOWNLOAD_URL} -P tests/example_client/phantomjs
+	cd tests/example_client/phantomjs; tar -xf ${PHANTOMJS_FILENAME}.tar.bz2 ${PHANTOMJS_FILENAME}/bin/phantomjs
+	cp tests/example_client/phantomjs/${PHANTOMJS_FILENAME}/bin/phantomjs tests/example_client/phantomjs
+	cd tests/example_client/phantomjs; rm ${PHANTOMJS_FILENAME}.tar.bz2; rm -rf ${PHANTOMJS_FILENAME}
+
+
+demo:
+	cd tests/example_client; rm exampleclient.db; python manage.py migrate; python manage.py loaddata fixtures.json; python manage.py runserver
 
 test:
 	py.test -vvvvv
 
 
-ci_test: clean mkbuilddir install-deps install-django init-db
-	@$(MAKE) --no-print-directory coverage flake8 pep8 clonedigger
+test: clean mkbuilddir install-deps install-django
+	pip install -r src/requirements/testing.pip
+	@$(MAKE) --no-print-directory coverage flake8 pep8
 
 
 .PHONY: build docs

@@ -3,11 +3,9 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '=k(c2*!w1j=(*e)j#!sm&-juc-a(m)vr-226bil(d(#kz_280j'
 DEBUG = True
-TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
-TEMPLATE_DIRS = [
-    os.path.join(BASE_DIR, 'templates'),
-]
+
+SESSION_COOKIE_NAME = 'example_client'
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -18,12 +16,31 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'page_exporter',
+    'example_client',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.core.context_processors.request",
-    "django.contrib.auth.context_processors.auth",
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
@@ -47,8 +64,8 @@ WSGI_APPLICATION = 'example_client.wsgi.application'
 SITE_ID = 1
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'exampleopenidclient',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'exampleclient.db',
         # 'TEST_NAME': 'db1111111.sqlite3',
         'USER': 'postgres',
         'PASSWORD': ''
@@ -67,5 +84,10 @@ CACHES = {
     }
 }
 
+STATICFILES_DIRS = [
+    os.path.join(os.path.dirname(__file__), '..', 'static'),
+]
+
+PAGE_EXPORTER_PHANTOMJS_CMD = os.path.join(os.path.dirname(__file__), '..', 'phantomjs', 'phantomjs')
 
 from .logging_conf import *  # noqa

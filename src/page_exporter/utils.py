@@ -13,11 +13,6 @@ except ImportError:
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.core.validators import URLValidator
-from io import BytesIO
-from django.template.loader import render_to_string
-from django.conf import settings
-
-
 from page_exporter.config import conf
 
 
@@ -105,7 +100,7 @@ def page_capture(stream, url, method=None, width=None, height=None,
         if page_status:
             cmd += ['--page_status=%s' % page_status]
         logger.debug(cmd)
-        # Run CasperJS process
+        # Run PhantomJS process
         proc = subprocess.Popen(cmd, **phantomjs_command_kwargs())
         stdout = proc.communicate()[0]
         process_phantomjs_stdout(stdout)
@@ -146,16 +141,6 @@ def process_phantomjs_stdout(stdout):
 
 
 def image_mimetype(render):
-    """Return internet media(image) type.
-    >>>image_mimetype(None)
-    'image/png'
-    >>>image_mimetype('jpg')
-    'image/jpeg'
-    >>>image_mimetype('png')
-    'image/png'
-    >>>image_mimetype('xbm')
-    'image/x-xbitmap'
-    """
     render = parse_render(render)
     # All most web browsers don't support 'image/x-ms-bmp'.
     if render == 'bmp':
@@ -181,18 +166,6 @@ def parse_url(request, url):
 
 
 def parse_render(render):
-    """Parse render URL parameter.
-    >>> parse_render(None)
-    'png'
-    >>> parse_render('html')
-    'png'
-    >>> parse_render('png')
-    'png'
-    >>> parse_render('jpg')
-    'jpeg'
-    >>> parse_render('gif')
-    'gif'
-    """
     formats = {
         'jpeg': guess_all_extensions('image/jpeg'),
         'png': guess_all_extensions('image/png'),
@@ -216,18 +189,7 @@ def parse_render(render):
 
 
 def parse_size(size_raw):
-    """ Parse size URL parameter.
-    >>> parse_size((100,None))
-    None
-    >>> parse_size('300x100')
-    (300, 100)
-    >>> parse_size('300x')
-    None
-    >>> parse_size('x100')
-    None
-    >>> parse_size('x')
-    None
-    """
+
     try:
         width_str, height_str = size_raw.lower().split('x')
     except AttributeError:
@@ -297,69 +259,11 @@ def image_postprocess(imagefile, output, size, crop, render):
         raise CaptureError(e)
 
 
-def build_absolute_uri(request, url):
-    """
-    Allow to override printing url, not necessarily on the same
-    server instance.
-    """
-    if conf.CAPTURE_ROOT_URL:
-        return urljoin(conf.CAPTURE_ROOT_URL, url)
-    return request.build_absolute_uri(url)
-
-
-def render_template(template_name, context, format='png',
-                    output=None, **options):
-    """
-    Render a template from django project, and return the
-    file object of the result.
-    """
-    # output stream, as required by phantomjs_capture
-    stream = BytesIO()
-    out_f = None
-    # the suffix=.html is a hack for phantomjs which *will*
-    # complain about not being able to open source file
-    # unless it has a 'html' extension.
-    with NamedTemporaryFile(suffix='.html') as render_file:
-        template_content = render_to_string(
-            template_name,
-            context
-        )
-        # now, we need to replace all occurences of STATIC_URL
-        # with the corresponding file://STATIC_ROOT, but only
-        # if STATIC_URL doesn't contain a public URI (like http(s))
-        static_url = getattr(settings, 'STATIC_URL', '')
-        if settings.STATIC_ROOT and\
-           static_url and not static_url.startswith('http'):
-            template_content = template_content.replace(
-                static_url,
-                'file://%s' % settings.STATIC_ROOT
-            )
-        render_file.write(template_content.encode('utf-8'))
-        # this is so that the temporary file actually gets filled
-        # with the result.
-        render_file.seek(0)
-
-        page_capture(
-            stream,
-            url='file://%s' % render_file.name,
-            **options
-        )
-
-        # if no output was provided, use NamedTemporaryFile
-        # (so it is an actual file) and return it (so that
-        # after function ends, it gets automatically removed)
-        if not output:
-            out_f = NamedTemporaryFile()
-        else:
-            # if output was provided, write the rendered
-            # content to it
-            out_f = open(output, 'wb')
-        out_f.write(stream.getvalue())
-        out_f.seek(0)
-
-        # return the output if NamedTemporaryFile was used
-        if not output:
-            return out_f
-        else:
-            # otherwise, just close the file.
-            out_f.close()
+# def build_absolute_uri(request, url):
+#     """
+#     Allow to override printing url, not necessarily on the same
+#     server instance.
+#     """
+#     if conf.CAPTURE_ROOT_URL:
+#         return urljoin(conf.CAPTURE_ROOT_URL, url)
+#     return request.build_absolute_uri(url)

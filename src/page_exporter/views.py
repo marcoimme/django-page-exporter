@@ -18,9 +18,6 @@ def capture(request):
     parameters = dict([(k, v) for k, v in request.GET.items()])
     parameters.update(dict([(k, v) for k, v in request.POST.items()]))
 
-    # if extra_params:
-    #     parameters.update(extra_params)
-
     url = parameters.get('url')
     if not url:
         return HttpResponseBadRequest(_('Missing url parameter'))

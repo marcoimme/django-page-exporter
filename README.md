@@ -39,4 +39,5 @@ Start coding
 Running Local
 -------------
 
-    cd example_client && ./manage.py runserver localhost:8000
+    make init
+    make demo
