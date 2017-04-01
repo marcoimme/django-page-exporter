@@ -3,7 +3,6 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 
 PAGE_EXPORTER_CAPTURE_SCRIPT = './capture.js'
-PAGE_EXPORTER_CAPTURE_ROOT_URL = None
 PAGE_EXPORTER_CLI_ARGS = []
 PAGE_EXPORTER_PHANTOMJS_CMD = None
 PAGE_EXPORTER_WAIT = '2000'

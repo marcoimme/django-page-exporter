@@ -1,7 +1,11 @@
 Django Page Exporter
 ==============================
 
+Simple Django application to export web pages in different formats (png, jpeg, pdf...)
+
 See https://django-page-exporter.readthedocs.org/en/latest/ for detailed documentation on the project.
+
+[![Build Status](https://travis-ci.org/marcoimme/django-page-exporter.svg?branch=develop)](https://travis-ci.org/marcoimme/django-page-exporter)
 
 
 How to use
@@ -11,7 +15,7 @@ Install django-page-exporter:
     pip install django-page-exporter
 
 
-The followings SETTINGS should contain values as follow:
+Include page_exporter in your SETTINGS as follow:
 
     INSTALLED_APPS = (
         ...
@@ -27,17 +31,24 @@ url.py should contain:
         ...
     )
 
+Following SETTINGS are available:
+
+    PAGE_EXPORTER_CAPTURE_SCRIPT = './capture.js'
+	PAGE_EXPORTER_PHANTOMJS_CMD = '~/bin/phantomjs'
+	PAGE_EXPORTER_WAIT = '2000'
+
+See [docs](https://django-page-exporter.readthedocs.org/en/latest/) for further information
+
 
 Start coding
 ------------
-
-
     make develop
 
-
+Tests
+------------
+    make test
 
 Running Local
 -------------
-
     make init
     make demo
