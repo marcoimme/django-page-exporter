@@ -4,3 +4,5 @@ include MANIFEST.in
 recursive-include docs *
 recursive-include src *
 recursive-include page_exporter *
+recursive-exclude tests *
+recursive-exclude docs *

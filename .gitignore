@@ -3,14 +3,17 @@
 *.pyo
 *.sqlite
 *.sqlite3
+*.db
 *.~*
 .coverage
 .idea
 .tox
 atlassian-ide-plugin.xml
 coverage.xml
+.coverage
 dist
 pytest.xml
 ~*
 .cache
 build
+tests/example_client/phantomjs/
