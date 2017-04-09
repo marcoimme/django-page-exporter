@@ -98,6 +98,11 @@ def page_capture(stream, url, method=None, width=None, height=None,
         # Run PhantomJS process
         proc = subprocess.Popen(cmd, **phantomjs_command_kwargs())
         stdout = proc.communicate()[0]
+
+        rc = proc.returncode
+        if rc > 0:
+            raise CaptureError(stdout)
+
         process_phantomjs_stdout(stdout)
 
         size = parse_size(size)

@@ -46,7 +46,7 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
 )
 
-LOGIN_URL = '/'
+LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = "/private/"
 
 MIDDLEWARE_CLASSES = (
