@@ -8,4 +8,4 @@ flake8
 django-webtest
 pytest-pythonpath
 mock
-#pysqlite
+codecov

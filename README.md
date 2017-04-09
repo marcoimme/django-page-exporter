@@ -6,7 +6,7 @@ Simple Django application to export web pages in different formats (png, jpeg, p
 See https://django-page-exporter.readthedocs.org/en/latest/ for detailed documentation on the project.
 
 [![Build Status](https://travis-ci.org/marcoimme/django-page-exporter.svg?branch=develop)](https://travis-ci.org/marcoimme/django-page-exporter)
-
+[![codecov](https://codecov.io/gh/marcoimme/django-page-exporter/branch/develop/graph/badge.svg)](https://codecov.io/gh/marcoimme/django-page-exporter)
 
 How to use
 ----------

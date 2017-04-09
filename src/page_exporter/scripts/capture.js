@@ -5,6 +5,32 @@
 var page = require('webpage').create(),
     system = require('system');
 
+/**
+ * arguments:
+ * [1] => URL
+ * [2] => output. Use /dev/stdout if you want to capture.
+ * [3] => size
+ */
+
+var address = system.args[1],
+    output = system.args[2];
+
+
+page.onConsoleMessage = function (msg) {
+    console.log(msg);
+};
+
+phantom.onError = function (msg, trace) {
+    var msgStack = ['PHANTOM ERROR: ' + msg];
+    if (trace && trace.length) {
+        msgStack.push('TRACE:');
+        trace.forEach(function (t) {
+            msgStack.push(' -> ' + (t.file || t.sourceURL) + ': ' + t.line + (t.function ? ' (in function ' + t.function + ')' : ''));
+        });
+    }
+    console.log(msgStack.join('\n'));
+    phantom.exit(1);
+};
 
 function waitFor(testFx, onReady, timeOutMillis) {
     var maxtimeOutMillis = timeOutMillis ? timeOutMillis : 3000, //< Default Max Timout is 3s
@@ -27,17 +53,9 @@ function waitFor(testFx, onReady, timeOutMillis) {
                 }
             }
         }, 250); //< repeat check every 250ms
-};
+}
 
-/**
- * arguments:
- * [1] => URL
- * [2] => output. Use /dev/stdout if you want to capture.
- * [3] => size
- */
 
-var address = system.args[1],
-    output = system.args[2];
 
 config = {};
 system.args.forEach(function (arg, i) {
@@ -50,6 +68,7 @@ system.args.forEach(function (arg, i) {
 var method = config.method || 'get',
     width = config.width || 1400,
     height = config.height || 1,
+    css_selector = config.selector || null,
     wait = config.wait || 200;
 
 /**
@@ -72,6 +91,27 @@ if (config.cookie_name != null) {
     });
 }
 
+function render(p, out) {
+    if (css_selector != null) {
+        var cc = p.evaluate(function (css_s) {
+            return document.querySelector(css_s).getBoundingClientRect();
+        }, css_selector);
+
+        p.clipRect = {
+            top: cc.top,
+            left: cc.left,
+            width: cc.width,
+            height: cc.height
+        };
+
+        p.render(out, {format: format});
+    } else {
+        p.render(out, {format: format});
+    }
+    phantom.exit();
+
+}
+
 
 page.open(address, function (status) {
     if (status == 'success') {
@@ -84,13 +124,11 @@ page.open(address, function (status) {
                     return document.page_status == 'ready';
                 });
             }, function () {
-                page.render(output, {format: format});
-                phantom.exit();
+                render(page, output);
             }, parseInt(wait));
         } else {
-            setTimeout(function(){
-                page.render(output, {format: format});
-                phantom.exit();
+            setTimeout(function () {
+                render(page, output);
             }, wait);
         }
 

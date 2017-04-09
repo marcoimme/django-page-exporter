@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, print_function, unicode_literals
 
-import logging
-
 from django.conf import settings
-from django.views.generic.base import ContextMixin, TemplateView
+from django.views.generic.base import TemplateView
 
 
 class PrivateView(TemplateView):

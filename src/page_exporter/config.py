@@ -7,6 +7,7 @@ PAGE_EXPORTER_CLI_ARGS = []
 PAGE_EXPORTER_PHANTOMJS_CMD = None
 PAGE_EXPORTER_WAIT = '2000'
 
+
 class Settings(object):
     def __init__(self, prefix):
         self.prefix = prefix

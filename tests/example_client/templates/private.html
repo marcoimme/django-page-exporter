@@ -1,28 +1,75 @@
 {% extends "base.html" %}
 
+{% block info %}
+    {{ block.super }}
+    <p>
+        This is a private Page
+    </p>
+    <p>
+        Capture an authenticated page passing session cookie to phantomsj
+    </p>
+{% endblock info %}
+
 {% block form %}
     <form action="{% url 'capture' %}" method="post">
-    {% csrf_token %}
-        <input type="text" name="render" value="png"> Render<br/>
-        <input type="text" name="url" value="http://localhost:8000/private/"> URL<br/>
-        <input type="text" name="width" value="1024"> Width<br/>
-        <input type="text" name="height" value="768"> Height<br/>
-        <input type="text" name="cookie_name" value="{{ cookie_name }}"> Cookie Name<br/>
-        <input type="text" name="cookie_value" value="{{ cookie_value }}"> Cookie Value<br/>
-        <input type="text" name="cookie_domain" value="{{ cookie_domain }}"> Cookie Domain<br/>
-        <input type="submit" value="Capture!">
+        {% csrf_token %}
+        <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Render</label>
+            <div class="col-2">
+                <input class="form-control form-control-sm" type="text" name="render" value="png">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">URL</label>
+            <div class="col-2">
+                <input class="form-control form-control-sm" type="text" name="url"
+                       value="http://localhost:8000/private">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Width</label>
+            <div class="col-2">
+                <input class="form-control form-control-sm" type="text" name="width" value="1024">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Height</label>
+            <div class="col-2">
+                <input class="form-control form-control-sm" type="text" name="height" value="768">
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Cookie Name</label>
+            <div class="col-2">
+                <input class="form-control form-control-sm" type="text" name="cookie_name" value="{{ cookie_name }}">
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Cookie Value</label>
+            <div class="col-2">
+                <input class="form-control form-control-sm" type="text" name="cookie_value" value="{{ cookie_value }}">
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Cookie Domain</label>
+            <div class="col-2">
+                <input class="form-control form-control-sm" type="text" value="{{ cookie_domain }}">
+            </div>
+        </div>
+        <input type="hidden" id="selector" name="selector" value="">
+        <input type="submit" value="Capture!" class="btn btn-primary">
     </form>
 {% endblock form %}
 
-{% block content %}
-
-
-    <h1>Private Page</h1>
-    <h3>Capture an authenticated page passing session cookie to phantomsj</h3>
-    {% if user.is_authenticated %}
-        <a href="/accounts/logout/">logout</a>
-    {% else %}
-        <a href="/accounts/login/">login</a>
-    {% endif %}
-    {{ block.super }}
-{% endblock content %}
+{#{% block content %}#}
+{##}
+{#    <h1>Private Page</h1>#}
+{#    <h3>Capture an authenticated page passing session cookie to phantomsj</h3>#}
+{#    {{ block.super }}#}
+{#{% endblock content %}#}
