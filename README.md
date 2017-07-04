@@ -36,7 +36,7 @@ Following SETTINGS are available:
     PAGE_EXPORTER_CAPTURE_SCRIPT = './capture.js'
 	PAGE_EXPORTER_PHANTOMJS_CMD = '~/bin/phantomjs'
 	PAGE_EXPORTER_WAIT = '2000'
-	PAGE_EXPORTER_TIMEOUT = '60000'
+	PAGE_EXPORTER_TIMEOUT_SECONDS = 60
 
 See [docs](https://django-page-exporter.readthedocs.org/en/latest/) for further information
 
