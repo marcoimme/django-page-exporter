@@ -41,4 +41,4 @@ you can ovverride default configuration using:
     PAGE_EXPORTER_CLI_ARGS = []
     PAGE_EXPORTER_PHANTOMJS_CMD = None
     PAGE_EXPORTER_WAIT = '2000'
-    PAGE_EXPORTER_TIMEOUT = '60000'
+    PAGE_EXPORTER_TIMEOUT_SECONDS = 60
