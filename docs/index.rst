@@ -2,10 +2,10 @@
 .. _index:
 
 ==================================
-|project-label| documentation
+Django Page Exporter documentation
 ==================================
 
-Welcome to |project-label| Documentation.
+Welcome to Django Page Exporter Documentation.
 
 
 
@@ -16,43 +16,6 @@ Developer Documentation
 
     install
     configuration
-    warnings
+    parameters
+    apidocs/page_exporter
     intershpinx
-
-
-Getting help
-=============
-
-Having trouble? We'd like to help!
-
-* Try the :doc:`FAQ <faq>` -- it's got answers to many common questions.
-
-* Looking for specific information? Try the :ref:`genindex`, :ref:`modindex` or
-  the :doc:`detailed table of contents <contents>`.
-
-
-Links
-=====
-
-   * Project home page: |home|
-   * Issue tracker: |issues|
-   * Code Coverage: |coverage|
-   * Continuous Integration: |ci|
-
-   * Demo site: |deploy-pre|
-   * Nightly build: |deploy-dev|
-
-
-Indices, glossary and tables
-=============================
-
-* :doc:`contents`
-* :ref:`genindex`
-* :ref:`search`
-* :ref:`glossary`
-
-
-.. toctree::
-   :hidden:
-
-    contents

@@ -75,7 +75,7 @@ intersphinx:
 
 docs: mkbuilddir intersphinx
 	rm -fr docs/apidocs
-	sphinx-apidoc page_exporter -H page_exporter -o docs/apidocs
+	sphinx-apidoc src/page_exporter -H page_exporter -o docs/apidocs
 	sphinx-build -n docs/ ${BUILDDIR}/docs/
 ifdef BROWSE
 	firefox ${BUILDDIR}/docs/index.html

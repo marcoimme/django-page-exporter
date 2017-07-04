@@ -8,19 +8,9 @@
 About
 ======
 
-|project-label| itself stands for....
+Django Page Exporter
 
-Why |project-label|
+Why Django Page Exporter
 ------------------------------------------------
-
- |TODO|
-
-Short History of |project-label|
------------------------------------------------
-
- |TODO|
-
-Difference with the prevous system
-----------------------------------
 
  |TODO|

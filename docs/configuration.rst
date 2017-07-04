@@ -33,4 +33,12 @@ url.py should contain:
         ...
     )
 
+you can ovverride default configuration using:
 
+.. code-block:: python
+
+    PAGE_EXPORTER_CAPTURE_SCRIPT = './capture.js'
+    PAGE_EXPORTER_CLI_ARGS = []
+    PAGE_EXPORTER_PHANTOMJS_CMD = None
+    PAGE_EXPORTER_WAIT = '2000'
+    PAGE_EXPORTER_TIMEOUT = '60000'
