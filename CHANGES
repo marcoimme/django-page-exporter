@@ -1,7 +1,7 @@
-Release 0.3 (dev)
------------------
+Release 0.3
+-----------
 
-*
+* added phantomjs process timeout
 
 Release 0.2
 -----------
