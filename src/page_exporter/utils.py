@@ -1,3 +1,5 @@
+from threading import Timer
+
 from django.utils import six
 import os
 import logging
@@ -53,6 +55,7 @@ def phantomjs_command():
 
 
 PHANTOMJS_CMD = phantomjs_command()
+kill = lambda process: process.kill()
 
 
 def page_capture(stream, url, method=None, width=None, height=None,
@@ -97,7 +100,14 @@ def page_capture(stream, url, method=None, width=None, height=None,
         logger.debug(cmd)
         # Run PhantomJS process
         proc = subprocess.Popen(cmd, **phantomjs_command_kwargs())
-        stdout = proc.communicate()[0]
+
+        my_timer = Timer(conf.TIMEOUT, kill, [proc])
+
+        try:
+            my_timer.start()
+            stdout, stderr = proc.communicate()
+        finally:
+            my_timer.cancel()
 
         rc = proc.returncode
         if rc > 0:
