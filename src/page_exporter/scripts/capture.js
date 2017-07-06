@@ -87,7 +87,8 @@ if (config.cookie_name != null) {
     phantom.addCookie({
         'name': config.cookie_name || 'sessionid',
         'value': config.cookie_value || '',
-        'domain': config.cookie_domain || 'localhost'
+        'domain': config.cookie_domain || 'localhost',
+        'secure': config.cookie_secure || false
     });
 }
 
@@ -133,5 +134,7 @@ page.open(address, function (status) {
         }
 
 
+    }else if(status == 'fail'){
+        phantom.exit();
     }
 });
