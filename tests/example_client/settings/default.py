@@ -90,4 +90,7 @@ STATICFILES_DIRS = [
 
 PAGE_EXPORTER_PHANTOMJS_CMD = os.path.join(os.path.dirname(__file__), '..', 'phantomjs', 'phantomjs')
 
+PAGE_EXPORTER_WAIT = '10000'
+PAGE_EXPORTER_CLI_ARGS = ['--ignore-ssl-errors=true', '--ssl-protocol=any']
+
 from .logging_conf import *  # noqa

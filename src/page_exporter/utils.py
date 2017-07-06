@@ -1,5 +1,6 @@
 from threading import Timer
 
+from django.conf import settings
 from django.utils import six
 import os
 import logging
@@ -42,6 +43,7 @@ def phantomjs_command_kwargs():
 def phantomjs_command():
     cmd = conf.PHANTOMJS_CMD
     cmd = [cmd]
+    cmd_optz = conf.CLI_ARGS
 
     # Concatenate with capture script
     app_path = os.path.dirname(__file__)
@@ -51,7 +53,8 @@ def phantomjs_command():
         capture = os.path.join(app_path, 'scripts', capture)
 
     assert os.path.exists(capture), 'Cannot find %s' % capture
-    return cmd + [capture]
+
+    return cmd + cmd_optz + [capture]
 
 
 PHANTOMJS_CMD = phantomjs_command()
@@ -97,6 +100,9 @@ def page_capture(stream, url, method=None, width=None, height=None,
             cmd += ['--cookie_domain=%s' % cookie_domain]
         if page_status:
             cmd += ['--page_status=%s' % page_status]
+        if getattr(settings, 'SESSION_COOKIE_SECURE', False):
+            cmd += ['--cookie_secure=true']
+
         logger.debug(cmd)
         # Run PhantomJS process
         proc = subprocess.Popen(cmd, **phantomjs_command_kwargs())
