@@ -105,6 +105,7 @@ def page_capture(stream, url, method=None, width=None, height=None,
 
         logger.debug(cmd)
         # Run PhantomJS process
+        print(111111111, cmd, phantomjs_command_kwargs)
         proc = subprocess.Popen(cmd, **phantomjs_command_kwargs())
 
         my_timer = Timer(conf.TIMEOUT_SECONDS, kill, [proc])

@@ -1,0 +1,26 @@
+{
+  "name": "django-page-exporter",
+  "version": "1.0.0",
+  "description": "Django Page Exporter ==============================",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcoimme/django-page-exporter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcoimme/django-page-exporter/issues"
+  },
+  "homepage": "https://github.com/marcoimme/django-page-exporter#readme",
+  "dependencies": {
+    "puppeteer": "^1.7.0"
+  }
+}

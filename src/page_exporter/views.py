@@ -56,6 +56,7 @@ def capture(request):
                      wait=wait, cookie_name=cookie_name, cookie_value=cookie_value,
                      cookie_domain=cookie_domain, page_status=page_status)
     except CaptureError as e:
+        print(111111111, e)
         return HttpResponseBadRequest(e)
     except ImportError:
         error_msg = _('Resize not supported (PIL not available)')
