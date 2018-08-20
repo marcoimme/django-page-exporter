@@ -88,8 +88,8 @@ STATICFILES_DIRS = [
     os.path.join(os.path.dirname(__file__), '..', 'static'),
 ]
 
-PAGE_EXPORTER_PHANTOMJS_CMD = os.path.join(os.path.dirname(__file__), '..', 'phantomjs', 'phantomjs')
-PAGE_EXPORTER_PHANTOMJS_CMD = 'node'
+PAGE_EXPORTER_SCRIPT_CMD = os.path.join(os.path.dirname(__file__), '..', 'phantomjs', 'phantomjs')
+PAGE_EXPORTER_SCRIPT_CMD = 'node'
 
 PAGE_EXPORTER_CAPTURE_SCRIPT = './print.js'
 
