@@ -25,7 +25,7 @@ class CaptureError(Exception):
     pass
 
 
-def phantomjs_command_kwargs():
+def script_command_kwargs():
     """ will construct kwargs for cmd
     """
     kwargs = {
@@ -33,15 +33,15 @@ def phantomjs_command_kwargs():
         'stderr': subprocess.PIPE,
         'universal_newlines': True
     }
-    phantom_js_cmd = conf.PHANTOMJS_CMD
+    phantom_js_cmd = conf.SCRIPT_CMD
     if phantom_js_cmd:
         path = '{0}:{1}'.format(os.getenv('PATH', ''), phantom_js_cmd)
         kwargs.update({'env': {'PATH': path}})
     return kwargs
 
 
-def phantomjs_command():
-    cmd = conf.PHANTOMJS_CMD
+def script_command():
+    cmd = conf.SCRIPT_CMD
     cmd = [cmd]
     cmd_optz = conf.CLI_ARGS
 
@@ -57,7 +57,7 @@ def phantomjs_command():
     return cmd + cmd_optz + [capture]
 
 
-PHANTOMJS_CMD = phantomjs_command()
+SCRIPT_CMD = script_command()
 kill = lambda process: process.kill()
 
 
@@ -74,7 +74,7 @@ def page_capture(stream, url, method=None, width=None, height=None,
         with NamedTemporaryFile('wb+', suffix='.%s' % render, delete=False) as f:
             output = f.name
     try:
-        cmd = PHANTOMJS_CMD + [url, output]
+        cmd = SCRIPT_CMD + [url, output]
 
         # Extra command-line options
         cmd += ['--format=%s' % render]
@@ -104,9 +104,8 @@ def page_capture(stream, url, method=None, width=None, height=None,
             cmd += ['--cookie_secure=true']
 
         logger.debug(cmd)
-        # Run PhantomJS process
-        print(111111111, cmd, phantomjs_command_kwargs)
-        proc = subprocess.Popen(cmd, **phantomjs_command_kwargs())
+        # Run script process
+        proc = subprocess.Popen(cmd, **script_command_kwargs())
 
         my_timer = Timer(conf.TIMEOUT_SECONDS, kill, [proc])
 
