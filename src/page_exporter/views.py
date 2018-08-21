@@ -1,7 +1,10 @@
 import logging
 from io import BytesIO
 
-from django.core.urlresolvers import NoReverseMatch
+try:  # Django>=2
+    from django.urls.exceptions import NoReverseMatch
+except:  # NOQA
+    from django.core.urlresolvers import NoReverseMatch
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.utils.translation import ugettext as _
 

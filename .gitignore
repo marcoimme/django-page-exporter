@@ -18,3 +18,4 @@ pytest.xml
 build
 tests/example_client/phantomjs/
 node_modules/
+.pytest_cache

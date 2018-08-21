@@ -9,7 +9,10 @@ from tempfile import NamedTemporaryFile
 import json
 from mimetypes import guess_type, guess_all_extensions
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
+try:  # Django>=2
+    from django.urls import reverse
+except:  # NOQA
+    from django.core.urlresolvers import reverse
 from django.core.validators import URLValidator
 from page_exporter.config import conf
 
