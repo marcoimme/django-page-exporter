@@ -3,7 +3,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '=k(c2*!w1j=(*e)j#!sm&-juc-a(m)vr-226bil(d(#kz_280j'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 SESSION_COOKIE_NAME = 'example_client'
 
@@ -88,9 +88,12 @@ STATICFILES_DIRS = [
     os.path.join(os.path.dirname(__file__), '..', 'static'),
 ]
 
-PAGE_EXPORTER_PHANTOMJS_CMD = os.path.join(os.path.dirname(__file__), '..', 'phantomjs', 'phantomjs')
+PAGE_EXPORTER_SCRIPT_CMD = os.path.join(os.path.dirname(__file__), '..', 'phantomjs', 'phantomjs')
+PAGE_EXPORTER_SCRIPT_CMD = 'node'
+
+PAGE_EXPORTER_CAPTURE_SCRIPT = './print.js'
 
 PAGE_EXPORTER_WAIT = '10000'
-PAGE_EXPORTER_CLI_ARGS = ['--ignore-ssl-errors=true', '--ssl-protocol=any']
+# PAGE_EXPORTER_CLI_ARGS = ['--ignore-ssl-errors=true', '--ssl-protocol=any']
 
 from .logging_conf import *  # noqa

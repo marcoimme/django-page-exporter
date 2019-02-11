@@ -6,29 +6,37 @@ import mock as mock
 import subprocess
 
 from django.http import HttpResponseBadRequest
-from django.test import RequestFactory
+from django.test import RequestFactory, override_settings
+
 try:
     from django.urls import reverse, NoReverseMatch
 except:
     from django.core.urlresolvers import reverse, NoReverseMatch
 
-from page_exporter.utils import phantomjs_command_kwargs, phantomjs_command, image_mimetype, parse_render, parse_size, \
+from page_exporter.utils import script_command_kwargs, script_command, image_mimetype, parse_render, parse_size, \
     page_capture, parse_url
 from page_exporter.views import capture
 
 
-def test_phantomjs_command_kwargs():
-    kw = phantomjs_command_kwargs()
+def test_script_command_kwargs():
+    kw = script_command_kwargs()
     assert 'stdout' in kw
     assert 'stderr' in kw
     assert 'universal_newlines' in kw
     assert 'env' in kw
 
 
-def test_phantomjs_command():
-    out = phantomjs_command()
-    assert 'phantomjs' in out[0]
-    assert 'capture' in out[1]
+def test_script_command():
+    with override_settings(PAGE_EXPORTER_SCRIPT_CMD='node'):
+        with override_settings(PAGE_EXPORTER_CAPTURE_SCRIPT='./print.js'):
+            out = script_command()
+            assert 'node' in out[0]
+            assert 'print' in out[1]
+    with override_settings(PAGE_EXPORTER_SCRIPT_CMD='phantomjs'):
+        with override_settings(PAGE_EXPORTER_CAPTURE_SCRIPT='./capture.js'):
+            out = script_command()
+            assert 'phantomjs' in out[0]
+            assert 'capture' in out[1]
 
 
 def test_image_mimetype():
@@ -136,4 +144,4 @@ def test_page_capture_with_params(mock_popen):
     assert '--waitfor=test' in args[0]
     assert '--wait=test' in args[0]
 
-    assert kwargs == phantomjs_command_kwargs()
+    assert kwargs == script_command_kwargs()

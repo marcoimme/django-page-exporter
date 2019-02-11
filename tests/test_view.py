@@ -6,9 +6,9 @@ from django.test import RequestFactory
 from page_exporter.views import capture
 
 try:
-    from django.urls import reverse
+    from django.urls import reverse_lazy
 except:
-    from django.core.urlresolvers import reverse
+    from django.core.urlresolvers import reverse_lazy
 from fixtures import *  # NOQA
 
 
@@ -33,7 +33,7 @@ def test_view_capture(mock_popen):
         'wait': 'test',
     }
     rf = RequestFactory()
-    request = rf.get(reverse('capture'), p)
+    request = rf.get(reverse_lazy('capture'), p)
     capture(request)
     assert mock_popen.called
 
@@ -43,14 +43,14 @@ def test_view_capture_badRequest(mock_popen):
     mock_popen.return_value.communicate.return_value = ("output", "Error")
     rf = RequestFactory()
     p = {}
-    request = rf.get(reverse('capture'), p)
+    request = rf.get(reverse_lazy('capture'), p)
     ret = capture(request)
     assert isinstance(ret, HttpResponseBadRequest)
 
     p = {
         'url': 'badurl'
     }
-    request = rf.get(reverse('capture'), p)
+    request = rf.get(reverse_lazy('capture'), p)
     ret = capture(request)
     assert isinstance(ret, HttpResponseBadRequest)
 
@@ -65,7 +65,7 @@ def test_view_capture_wrong_size_params(mock_popen):
         'width': 'aa',
         'height': 'bb',
     }
-    request = rf.get(reverse('capture'), p)
+    request = rf.get(reverse_lazy('capture'), p)
     ret = capture(request)
     args, kwargs = mock_popen.call_args
     assert '--width=aa' not in args[0]
@@ -82,7 +82,7 @@ def test_view_capture_wrong_size_params(mock_popen):
         'width': 'aa',
         'height': 'bb',
     }
-    request = rf.get(reverse('capture'), p)
+    request = rf.get(reverse_lazy('capture'), p)
     ret = capture(request)
     args, kwargs = mock_popen.call_args
     assert '--width=aa' not in args[0]

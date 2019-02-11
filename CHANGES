@@ -1,3 +1,9 @@
+Release 0.5
+-----------
+
+* removed dj19 and dj110 compatibility
+* dropped phantomjs dependency and start using Puppeteer
+
 Release 0.4
 -----------
 
