@@ -108,6 +108,7 @@ def page_capture(stream, url, method=None, width=None, height=None,
 
         logger.debug(cmd)
         # Run script process
+        print(11111, cmd, script_command_kwargs())
         proc = subprocess.Popen(cmd, **script_command_kwargs())
 
         my_timer = Timer(conf.TIMEOUT_SECONDS, kill, [proc])

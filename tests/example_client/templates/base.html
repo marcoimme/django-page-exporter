@@ -128,44 +128,82 @@
 {% endblock %}
 {% block form %}
     <div class="container">
-        <form action="{% url 'capture' %}">
-            <div class="form-group row">
-                <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Render</label>
-                <div class="col-2">
-                    <input class="form-control form-control-sm" type="text" name="render" value="png">
+    <div class="row">
+        <div class="col-sm-4">
+            <form action="{% url 'capture' %}">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Render</label>
+                    <div class="col-2">
+                        <input class="form-control form-control-sm" type="text" name="render" value="png">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">URL</label>
-                <div class="col-2">
-                    <input class="form-control form-control-sm" type="text" name="url" value="http://localhost:8000">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">URL</label>
+                    <div class="col-2">
+                        <input class="form-control form-control-sm" type="text" name="url"
+                               value="http://localhost:8000">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Width</label>
-                <div class="col-2">
-                    <input class="form-control form-control-sm" type="text" name="width" value="1024">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Width</label>
+                    <div class="col-2">
+                        <input class="form-control form-control-sm" type="text" name="width" value="1024">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Height</label>
-                <div class="col-2">
-                    <input class="form-control form-control-sm" type="text" name="height" value="768">
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Height</label>
+                    <div class="col-2">
+                        <input class="form-control form-control-sm" type="text" name="height" value="768">
+                    </div>
                 </div>
-            </div>
-            <input type="hidden" id="selector" name="selector" value="">
-            <input type="submit" value="Capture!" class="btn btn-primary">
-        </form>
+                <input type="hidden" id="selector" name="selector" value="">
+                <input type="submit" value="Capture!" class="btn btn-primary">
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <form action="{% url 'capture' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Render</label>
+                    <div class="col-2">
+                        <input class="form-control form-control-sm" type="text" name="render" value="png">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">HTML</label>
+                    <div class="col-10">
+                        <textarea class="form-control form-control-sm" name="html"></textarea>
+                    </div>
+                </div>
+                <input type="hidden" id="selector" name="selector" value="">
+                <input type="submit" value="Capture!" class="btn btn-primary">
+            </form>
+        </div>
+        <div class="col-sm-4">
+            <form action="{% url 'capture' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <label for="example-text-input" class="col-2 col-form-label col-form-label-sm">Render</label>
+                    <div class="col-2">
+                        <input class="form-control form-control-sm" type="text" name="render" value="png"/>
+                    </div>
+                </div>
+                <textarea class="form-control form-control-sm" name="html" onload="this.value = document.body.innerHTML"></textarea>
+                <label for="example-text-input" class="col-form-label col-form-label-sm">Just send the HTML of this page</label>
+                <input type="hidden" id="selector" name="selector" value="">
+                <input type="submit" value="Capture!" class="btn btn-primary">
+            </form>
+        </div>
     </div>
 {% endblock form %}
 </div>
 </body>
 <script>
-    $('#export-page-selector').click(function (e) {
-        e.preventDefault();
-        $('#selector').val('#external-image');
-        $('form').submit();
-    })
+  $('#export-page-selector').click(function (e) {
+    e.preventDefault();
+    $('#selector').val('#external-image');
+    $('form').submit();
+  })
 
 </script>
 </html>

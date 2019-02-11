@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/marcoimme/django-page-exporter#readme",
   "dependencies": {
-    "puppeteer": "^1.7.0"
+    "handlebars": "^4.0.12",
+    "puppeteer": "^1.10.0",
+    "xmldom": "^0.1.27"
   }
 }

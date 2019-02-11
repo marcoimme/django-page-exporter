@@ -1,4 +1,6 @@
 const puppeteer = require('puppeteer');
+const Handlebars = require('handlebars');
+var DOMParser = require('xmldom').DOMParser;
 
 const address = process.argv[2],
     output = process.argv[3];
@@ -13,12 +15,13 @@ process.argv.forEach(function (arg, i) {
     }
 });
 
-console.log(1111111, config);
 
+const VIEWPORT = { width: parseInt(config.width || 1024), height: parseInt(config.height || 768) };
+// , defaultViewport: {width: config.heigh, height: 768}
 (async () => {
   const browser = await puppeteer.launch({args: ['--no-sandbox']});
   const page = await browser.newPage();
-  console.log(22222, config.cookie_name, config.cookie_value);
+
   if (config.cookie_name != null) {
     let cookies = [{
           'name': config.cookie_name || 'sessionid',
@@ -29,10 +32,23 @@ console.log(1111111, config);
       await page.setCookie(...cookies);
   }
 
+  if(address.startsWith("http://") || address.startsWith("https://")){
+    await page.goto(address, {waitUntil: ['load', 'networkidle0']});
+  }else{
+    const template = Handlebars.compile("{{body}}");
+    await page.goto(`data:text/html,${address}`, { waitUntil: 'networkidle0' });
+  }
 
-  await page.goto(address, {waitUntil: 'networkidle0'});
-  await page.pdf({path: output, format: "A4"});
-  // await page.screenshot({path: output});
+  if(config.format === 'pdf'){
+    await page.pdf({path: output, format: "A4", printBackground: true});
+  }else{
+    await page.setViewport(VIEWPORT);
+
+    await page.screenshot({
+      path: output,
+      fullPage: true
+    });
+  }
 
   await browser.close();
 })();

@@ -19,15 +19,19 @@ def capture(request):
     # Merge both QueryDict into dict
     parameters = dict([(k, v) for k, v in request.GET.items()])
     parameters.update(dict([(k, v) for k, v in request.POST.items()]))
-
     url = parameters.get('url')
-    if not url:
-        return HttpResponseBadRequest(_('Missing url parameter'))
-    try:
-        url = parse_url(request, url)
-    except NoReverseMatch:
-        error_msg = _("URL '%s' invalid (could not reverse)") % url
-        return HttpResponseBadRequest(error_msg)
+    html_content = parameters.get('html')
+    if not url and not html_content:
+        return HttpResponseBadRequest(_('Missing url or html parameter'))
+
+    if url:
+        try:
+            url = parse_url(request, url)
+        except NoReverseMatch:
+            error_msg = _("URL '%s' invalid (could not reverse)") % url
+            return HttpResponseBadRequest(error_msg)
+    # if html_content:
+    #     html_content = "\"{}\"".format(html_content)
 
     method = parameters.get('method', request.method)
     selector = parameters.get('selector')
@@ -53,7 +57,7 @@ def capture(request):
 
     stream = BytesIO()
     try:
-        page_capture(stream, url, method=method.lower(), width=width,
+        page_capture(stream, url or html_content, method=method.lower(), width=width,
                      height=height, selector=selector, data=data,
                      size=size, waitfor=waitfor, crop=crop, render=render,
                      wait=wait, cookie_name=cookie_name, cookie_value=cookie_value,
