@@ -39,7 +39,7 @@ def script_command_kwargs():
     phantom_js_cmd = conf.SCRIPT_CMD
     if phantom_js_cmd:
         path = '{0}:{1}'.format(os.getenv('PATH', ''), phantom_js_cmd)
-        kwargs.update({'env': {'PATH': path}})
+        kwargs.update({'env': {'PATH': path, 'NODE_PATH': conf.NODE_PATH or os.getenv('NODE_PATH', '')}})
     return kwargs
 
 
