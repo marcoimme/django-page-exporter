@@ -5,7 +5,6 @@ var DOMParser = require('xmldom').DOMParser;
 const address = process.argv[2],
     output = process.argv[3];
 
-console.log(1111111, address, output);
 
 let config = {};
 process.argv.forEach(function (arg, i) {
@@ -40,7 +39,7 @@ const VIEWPORT = { width: parseInt(config.width || 1024), height: parseInt(confi
   }
 
   if(config.format === 'pdf'){
-    await page.pdf({path: output, format: "A4", printBackground: true});
+    await page.pdf({path: output, format: "A4", landscape: config.landscape === 'true', printBackground: true});
   }else{
     await page.setViewport(VIEWPORT);
 
