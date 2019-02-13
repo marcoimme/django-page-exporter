@@ -39,7 +39,7 @@ const VIEWPORT = { width: parseInt(config.width || 1024), height: parseInt(confi
   }
 
   if(config.format === 'pdf'){
-    await page.pdf({path: output, format: "A4", landscape: config.landscape, printBackground: true});
+    await page.pdf({path: output, format: "A4", landscape: config.landscape === 'true', printBackground: true});
   }else{
     await page.setViewport(VIEWPORT);
 
