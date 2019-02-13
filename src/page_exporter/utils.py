@@ -67,7 +67,7 @@ kill = lambda process: process.kill()
 def page_capture(stream, url, method=None, width=None, height=None,
                  selector=None, data=None, waitfor=None, size=None,
                  crop=None, render='png', wait=None, cookie_name=None, cookie_value=None, cookie_domain=None,
-                 page_status=None):
+                 page_status=None, landscape=None):
     """
     Captures web pages using ``phantomjs``
     """
@@ -103,12 +103,13 @@ def page_capture(stream, url, method=None, width=None, height=None,
             cmd += ['--cookie_domain=%s' % cookie_domain]
         if page_status:
             cmd += ['--page_status=%s' % page_status]
+        if landscape:
+            cmd += ['--landscape=%s' % landscape]
         if getattr(settings, 'SESSION_COOKIE_SECURE', False):
             cmd += ['--cookie_secure=true']
 
         logger.debug(cmd)
         # Run script process
-        print(11111, cmd, script_command_kwargs())
         proc = subprocess.Popen(cmd, **script_command_kwargs())
 
         my_timer = Timer(conf.TIMEOUT_SECONDS, kill, [proc])

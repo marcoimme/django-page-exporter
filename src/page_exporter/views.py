@@ -45,6 +45,7 @@ def capture(request):
     cookie_value = parameters.get('cookie_value')
     cookie_domain = parameters.get('cookie_domain')
     page_status = parameters.get('page_status')
+    landscape = parameters.get('landscape', 'false')
 
     try:
         width = int(parameters.get('width', ''))
@@ -61,7 +62,7 @@ def capture(request):
                      height=height, selector=selector, data=data,
                      size=size, waitfor=waitfor, crop=crop, render=render,
                      wait=wait, cookie_name=cookie_name, cookie_value=cookie_value,
-                     cookie_domain=cookie_domain, page_status=page_status)
+                     cookie_domain=cookie_domain, page_status=page_status, landscape=landscape)
     except CaptureError as e:
         return HttpResponseBadRequest(e)
     except ImportError:
